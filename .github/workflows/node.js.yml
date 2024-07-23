@@ -6,36 +6,33 @@ on: [push]
 
 # The list of jobs to run 
 jobs:
-  build_and_deploy_job:
-    runs-on: ubuntu-latest
-    name: Build and Deploy Job
+ build_and_deploy_job:
+  runs-on: ubuntu-latest
+  name: Build and Deploy Job
     
-    steps:
+  steps:
     # 1. Checkout Repository
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-      with:
-        ref: main
-
+  - name: Checkout Repository
+  
     # 3. Setup Node
-    - name: Setup Node 
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18.19'
-
+  - name: Setup Node 
+    uses: actions/setup-node@v3
+    with:
+     node-version: '18.19'
+  
     # 5. Build Angular Application
-    - name: Build Angular Application
-      run: |
-        npm install -g @angular/cli
-        npm install
-        ng build --prod
-
+  - name: Build Angular Application
+    run: |
+      npm install -g @angular/cli
+      npm install
+      ng build --prod
+  
     # 6. Copy to S3 bucket
-    - name: Copy to S3 Bucket
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-        AWS_REGION: 'us-east-1'
-      run: |
-        aws s3 cp ./dist/ s3://mybucketangular --region $AWS_REGION
+  - name: Copy to S3 Bucket
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      AWS_REGION: 'us-east-1'
+    run: |
+      aws s3 cp ./dist/ s3://mybucketangular --region $AWS_REGION
