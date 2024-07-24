@@ -22,7 +22,7 @@ jobs:
       run: npm install
  
     - name: Build project
-      run: ng build --prod
+      run: ng build 
  
     - name: Deploy to S3
       env:
@@ -32,4 +32,4 @@ jobs:
         AWS_REGION: 'us-east-1'
         S3_BUCKET: 'mybucketangular'
       run: |
-        aws s3 cp ./dist/* s3://$S3_BUCKET --recursive
+        aws s3 cp ./dist/* s3://$S3_BUCKET/ --recursive
